@@ -18,7 +18,15 @@ namespace Business.Concrete
 
         public void Add(Car car)
         {
-            _carDal.Add(car);
+            if (IsValidDailyPrice(car))
+            {
+                _carDal.Add(car);
+            }
+            else
+            {
+                throw new Exception("Daily Price must be greater than 0.");
+            }
+            
         }
 
         public void Delete(Car car)
@@ -33,12 +41,27 @@ namespace Business.Concrete
 
         public Car GetById(int carId)
         {
-            return _carDal.GetById(carId);
+            return _carDal.Get(c=>c.Id==carId);
+        }
+
+        public List<Car> GetCarsByBrandId(int brandId)
+        {
+            return _carDal.GetAll(c => c.BrandId == brandId);
+        }
+
+        public List<Car> GetCarsByColorId(int colorId)
+        {
+            return _carDal.GetAll(c => c.ColorId == colorId);
         }
 
         public void Update(Car car)
         {
             _carDal.Update(car);
+        }
+
+        bool IsValidDailyPrice(Car car)
+        {
+            return car.DailyPrice > 0 ? true : false;
         }
     }
 }
