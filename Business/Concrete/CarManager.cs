@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,7 +19,7 @@ namespace Business.Concrete
 
         public void Add(Car car)
         {
-            if (IsValidDailyPrice(car))
+            if (IsValidDailyPrice(car)&& IsValidName(car))
             {
                 _carDal.Add(car);
             }
@@ -54,6 +55,11 @@ namespace Business.Concrete
             return _carDal.GetAll(c => c.ColorId == colorId);
         }
 
+        public List<CarDetailDto> GetCarsDetails()
+        {
+            return _carDal.GetCarsDetails();
+        }
+
         public void Update(Car car)
         {
             _carDal.Update(car);
@@ -62,6 +68,10 @@ namespace Business.Concrete
         bool IsValidDailyPrice(Car car)
         {
             return car.DailyPrice > 0 ? true : false;
+        }
+        bool IsValidName(Car car)
+        {
+            return car.CarName.Trim().Length >= 2 ? true : false;
         }
     }
 }

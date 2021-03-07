@@ -18,14 +18,10 @@ namespace Business.Concrete
 
         public void Add(Brand brand)
         {
-            if (IsValidName(brand))
-            {
+           
                 _brandDal.Add(brand);
-            }
-            else
-            {
-                throw new Exception("Brand name must be equal or greater than 2 characters.");
-            }
+            
+          
            
         }
 
@@ -51,9 +47,6 @@ namespace Business.Concrete
             _brandDal.Update(brand);
         }
 
-        bool IsValidName(Brand brand)
-        {
-           return brand.Name.Trim().Length>=2?true:false;
-        }
+      
     }
 }
