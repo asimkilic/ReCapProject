@@ -30,7 +30,7 @@ namespace ConsoleUI
 
        
             Console.WriteLine("----------------------------# Details of Cars #---------------------------------------");
-            foreach (var car in carManager.GetCarsDetails())
+            foreach (var car in carManager.GetCarsDetails().Data)
             {
            
                 Console.WriteLine("{0} {1,-15} {2,-20} {3,-20} {4,-20} {5}", "|", "Brand Name", "Car Name", "Color","Daily Price","|");
@@ -50,7 +50,7 @@ namespace ConsoleUI
             //brandManager.Add(new Brand { Name = "Ford" });
             //brandManager.Add(new Brand { Name = "BMW" });
 
-            foreach (var brand in brandManager.GetAll())
+            foreach (var brand in brandManager.GetAll().Data)
             {
                
                 Console.WriteLine(brand.Id + "/" + brand.Name);
@@ -65,7 +65,7 @@ namespace ConsoleUI
             //colorManager.Add(new Color { Name = "Siyah" });
             //colorManager.Add(new Color { Name = "Beyaz" });
 
-            foreach (var color in colorManager.GetAll())
+            foreach (var color in colorManager.GetAll().Data)
             {
 
                 Console.WriteLine(color.Id + "/" + color.Name);
@@ -78,7 +78,7 @@ namespace ConsoleUI
             CarManager carService = new CarManager(new InMemoryCarDal());
             Console.WriteLine("-------#### Cars ####--------");
 
-            foreach (var c in carService.GetAll())
+            foreach (var c in carService.GetAll().Data)
             {
 
                 //Id, BrandId, ColorId, ModelYear, DailyPrice, Description
@@ -91,7 +91,7 @@ namespace ConsoleUI
                 Console.WriteLine("-----------------------------");
 
             }
-            var carGetById = carService.GetById(1);
+            var carGetById = carService.GetById(1).Data;
             Console.WriteLine("-------------------------# GetById #------------------------------------");
             Console.WriteLine("{0} {1,-5} {2,-10} {3,-10} {4,-10} {5,-13} {6,-15} {7}", "|", "Id", "Brand Id", "Color Id", "Model Year", "Daily Price", "Description", "|");
             Console.WriteLine();
@@ -123,7 +123,7 @@ namespace ConsoleUI
             Console.WriteLine();
             Console.WriteLine("-------#### Cars ####--------");
 
-            foreach (var c in carService.GetAll())
+            foreach (var c in carService.GetAll().Data)
             {
 
                 //Id, BrandId, ColorId, ModelYear, DailyPrice, Description
