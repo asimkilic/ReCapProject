@@ -12,12 +12,18 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             // InMemoryTest();
-            CarTest();
+            // CarTest();
             //BrandTest();
             //ColorTest();
-           
 
+            RentalRest();
 
+        }
+        private static void RentalRest()
+        {
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+           var result= rentalManager.Add(new Rental { CarId = 1, CustomerId = 1, RentDate =DateTime.Now });
+            Console.WriteLine(result.Message);
         }
         private static void CarTest()
         {
