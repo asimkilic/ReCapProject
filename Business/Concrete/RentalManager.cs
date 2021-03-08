@@ -5,6 +5,7 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using System.Linq;
 using Business.Constants;
+using System;
 
 namespace Business.Concrete
 {
@@ -22,9 +23,14 @@ namespace Business.Concrete
             var result = ((_rentalDal.GetAll(x => x.CarId == rental.CarId)).OrderByDescending(x=>x.RentDate)).FirstOrDefault();
             if (result.ReturnDate.HasValue)
             {
-                _rentalDal.Add(rental);
-                return new SuccessResult();
+             
+                if (DateTime.Compare(DateTime.Now, (DateTime)result.ReturnDate)>0)
+                {
+                    _rentalDal.Add(rental);
+                     return new SuccessResult();
+                }
 
+                
             }
             return new ErrorResult(Messages.RentalAddError);
         
