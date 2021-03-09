@@ -20,16 +20,18 @@ namespace Business.Concrete
 
         public IResult Add(Rental rental)
         {
-            var result = ((_rentalDal.GetAll(x => x.CarId == rental.CarId)).OrderByDescending(x=>x.RentDate)).FirstOrDefault();
-            if (result.ReturnDate.HasValue)
+            Rental result = ((_rentalDal.GetAll(x => x.CarId == rental.CarId)).OrderByDescending(x=>x.RentDate)).FirstOrDefault();
+            if (result==null)
+            {
+                _rentalDal.Add(rental);
+                return new SuccessResult();
+
+            }
+            if ((result.ReturnDate.HasValue) && (DateTime.Compare(DateTime.Now, (DateTime)result.ReturnDate) > 0))
             {
              
-                if (DateTime.Compare(DateTime.Now, (DateTime)result.ReturnDate)>0)
-                {
-                    _rentalDal.Add(rental);
-                     return new SuccessResult();
-                }
-
+                   _rentalDal.Add(rental);
+                   return new SuccessResult();
                 
             }
             return new ErrorResult(Messages.RentalAddError);

@@ -11,7 +11,7 @@ namespace Business.Constants
         public static string CustomerAdded = "Müşteri başarıyla eklendi.";
         public static string CustomerDeleted = "Müşteri başarıyla silindi.";
         public static string CustomerListed = "Müşteriler listelendi.";
-        public static string CustomerUpdated = "Müşteri silindi.";
+        public static string CustomerUpdated = "Müşteri güncellendi.";
 
         public static string UserAdded = "Kullanıcı eklendi.";
         public static string UserListed = "Kullanıcı listelendi.";
