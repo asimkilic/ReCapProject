@@ -6,6 +6,8 @@ using Entities.Concrete;
 using System.Linq;
 using Business.Constants;
 using System;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 
 namespace Business.Concrete
 {
@@ -18,6 +20,7 @@ namespace Business.Concrete
             _rentalDal = rentalDal;
         }
 
+        [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental rental)
         {
             Rental result = ((_rentalDal.GetAll(x => x.CarId == rental.CarId)).OrderByDescending(x=>x.RentDate)).FirstOrDefault();
@@ -38,6 +41,7 @@ namespace Business.Concrete
         
         }
 
+        [ValidationAspect(typeof(RentalValidator))]
         public IResult Delete(Rental rental)
         {
             _rentalDal.Delete(rental);
@@ -49,6 +53,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll());
         }
 
+        [ValidationAspect(typeof(RentalValidator))]
         public IResult Update(Rental rental)
         {
             _rentalDal.Update(rental);
