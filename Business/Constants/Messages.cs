@@ -16,9 +16,9 @@ namespace Business.Constants
         public static string UserAdded = "Kullanıcı eklendi.";
         public static string UserListed = "Kullanıcı listelendi.";
 
-        public static string RentalAddError = "Araç kiradan dönmedi";
-
-
-
+        public static string RentalAddError = "Araç kiradan dönmedi.";
+        public static string CarImageLimitExceeded="5 resimden fazla eklenemez.";
+        public static string ImageAdded="Resim başarıyla eklendi.";
+        public static string ImageUpdated="Resim başarıyla güncellendi.";
     }
 }
