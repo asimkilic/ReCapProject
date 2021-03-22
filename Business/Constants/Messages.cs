@@ -1,3 +1,5 @@
+using Core.Entities.Concrete;
+
 namespace Business.Constants
 {
     public static class Messages
@@ -13,12 +15,17 @@ namespace Business.Constants
         public static string CustomerListed = "Müşteriler listelendi.";
         public static string CustomerUpdated = "Müşteri güncellendi.";
 
-        public static string UserAdded = "Kullanıcı eklendi.";
+        public static string UserAdded = "Kullanıcı başarıyla eklendi.";
         public static string UserListed = "Kullanıcı listelendi.";
 
         public static string RentalAddError = "Araç kiradan dönmedi.";
         public static string CarImageLimitExceeded="5 resimden fazla eklenemez.";
         public static string ImageAdded="Resim başarıyla eklendi.";
         public static string ImageUpdated="Resim başarıyla güncellendi.";
+        public static string UserNotFound="Kullanıcı bulunamadı";
+        public static string PasswordError="Hatalı parola";
+        public static string SuccessfullLogin="Giriş Başarılı";
+        public static string UserAlreadyExist="Kullanıcı zaten mevcut";
+        public static string AccessTokenCreated="Access Token oluşturuldu";
     }
 }
