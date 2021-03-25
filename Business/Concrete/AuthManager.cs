@@ -41,7 +41,7 @@ namespace Business.Concrete
             }
             return new ErrorDataResult<User>(result.Message);
         }
-       
+
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
         {
             byte[] passwordHash, passwordSalt;
@@ -58,18 +58,13 @@ namespace Business.Concrete
             _userService.Add(user);
             return new SuccessDataResult<User>(user, Messages.UserAdded);
         }
-
         public IResult UserExist(string email)
-        {
-           
+        {        
             if (!CheckIfUserExist(email).Success)
             {
                 return new SuccessResult();
-                
             }
             return new ErrorResult(Messages.UserAlreadyExist);
-
-
         }
         private IResult CheckIfUserExist(string email)
         {

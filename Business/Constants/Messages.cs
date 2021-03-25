@@ -1,4 +1,5 @@
 using Core.Entities.Concrete;
+using System.Runtime.Serialization;
 
 namespace Business.Constants
 {
@@ -27,5 +28,6 @@ namespace Business.Constants
         public static string SuccessfullLogin="Giriş Başarılı";
         public static string UserAlreadyExist="Kullanıcı zaten mevcut";
         public static string AccessTokenCreated="Access Token oluşturuldu";
+        public static string AuthorizationDenied="Yetkiniz yok.";
     }
 }

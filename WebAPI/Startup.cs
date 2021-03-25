@@ -1,5 +1,8 @@
 using Business.Abstract;
 using Business.Concrete;
+using Core.DependencyResolvers;
+using Core.Extensions;
+using Core.Utilities.IoC;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.JWT;
 using DataAccess.Abstract;
@@ -34,11 +37,13 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowOrigin",
-                    builder => builder.WithOrigins("http://localhost:3000"));
-            });
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy("AllowOrigin",
+            //        builder => builder.WithOrigins("http://localhost:3000"));
+            //});
+
+
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
@@ -55,7 +60,9 @@ namespace WebAPI
                 };
             });
 
-           
+            services.AddDependencyResolvers(new ICoreModule[]{
+            new CoreModule()
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,13 +73,14 @@ namespace WebAPI
                 app.UseDeveloperExceptionPage();
             }
             app.UseStaticFiles();
-            app.UseCors(builder => builder.WithOrigins("http://localhost:3000").AllowAnyHeader());
+          //  app.UseCors(builder => builder.WithOrigins("http://localhost:3000").AllowAnyHeader());
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseAuthentication(); //giriþ anahtarý
             app.UseAuthorization(); //yetki
+            app.UseAuthentication(); //giriþ anahtarý
+         
             
 
             app.UseEndpoints(endpoints =>

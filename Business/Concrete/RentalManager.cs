@@ -8,6 +8,9 @@ using Business.Constants;
 using System;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
+using Business.BusinessAspects.Autofac;
+using Core.Aspects.Autofac.Caching;
 
 namespace Business.Concrete
 {
@@ -19,46 +22,57 @@ namespace Business.Concrete
         {
             _rentalDal = rentalDal;
         }
-
+        [SecuredOperation("admin,rental.admin,rental.add")]
         [ValidationAspect(typeof(RentalValidator))]
+        [CacheRemoveAspect("IRentalService.Get")]
         public IResult Add(Rental rental)
         {
-            Rental result = ((_rentalDal.GetAll(x => x.CarId == rental.CarId)).OrderByDescending(x=>x.RentDate)).FirstOrDefault();
+            var result=BusinessRules.Run(CheckRentalAvailable(rental.CarId));
             if (result==null)
             {
                 _rentalDal.Add(rental);
                 return new SuccessResult();
-
-            }
-            if ((result.ReturnDate.HasValue) && (DateTime.Compare(DateTime.Now, (DateTime)result.ReturnDate) > 0))
-            {
-             
-                   _rentalDal.Add(rental);
-                   return new SuccessResult();
-                
             }
             return new ErrorResult(Messages.RentalAddError);
         
         }
-
+        [SecuredOperation("admin,rental.admin,rental.delete")]
         [ValidationAspect(typeof(RentalValidator))]
+        [CacheRemoveAspect("IRentalService.Get")]
         public IResult Delete(Rental rental)
         {
             _rentalDal.Delete(rental);
             return new SuccessResult();
         }
-
+        [SecuredOperation("admin,rental.admin,rental.getall")]
         public IDataResult<List<Rental>> GetAll()
         {
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll());
         }
-
+        [SecuredOperation("admin,rental.admin,rental.update")]
         [ValidationAspect(typeof(RentalValidator))]
+        [CacheRemoveAspect("IRentalService.Get")]
         public IResult Update(Rental rental)
         {
             _rentalDal.Update(rental);
             return new SuccessResult();
         }
+        private IResult CheckRentalAvailable(int carId)
+        {
+            Rental result = ((_rentalDal.GetAll(x => x.CarId == carId)).OrderByDescending(x => x.RentDate)).FirstOrDefault();
+            if (result == null)
+            {
+                return new SuccessResult();
 
+            }
+            if ((result.ReturnDate.HasValue) && (DateTime.Compare(DateTime.Now, (DateTime)result.ReturnDate) > 0))
+            {
+
+                return new SuccessResult();
+
+            }
+            return new ErrorResult(Messages.RentalAddError);
+
+        }
     }
 }
