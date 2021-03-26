@@ -19,7 +19,7 @@ namespace Business.Concrete
             _userDal = userDal;
            
         }
-        [SecuredOperation("admin,user.admin,user.add")]
+        
         [ValidationAspect(typeof(UserValidator))]
         [CacheRemoveAspect("IUserService.Get")]
         public IResult Add(User user)
@@ -27,7 +27,7 @@ namespace Business.Concrete
             _userDal.Add(user);
             return new SuccessResult(Messages.UserAdded);
         }
-        [SecuredOperation("admin,user.admin,user.delete")]
+      //  [SecuredOperation("admin,user.admin,user.delete")]
         [ValidationAspect(typeof(UserValidator))]
         [CacheRemoveAspect("IUserService.Get")]
         public IResult Delete(User user)
@@ -35,7 +35,7 @@ namespace Business.Concrete
             _userDal.Delete(user);
             return new SuccessResult();
         }
-        [SecuredOperation("admin,user.admin,user.getall")]
+      //  [SecuredOperation("admin,user.admin,user.getall")]
         public IDataResult<List<User>> GetAll()
         {
             return new SuccessDataResult<List<User>>(_userDal.GetAll(), Messages.UserListed);
@@ -49,7 +49,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user));
         }
-        [SecuredOperation("admin,user.admin,user.update")]
+      //  [SecuredOperation("admin,user.admin,user.update")]
         [ValidationAspect(typeof(UserValidator))]
         [CacheRemoveAspect("IUserService.Get")]
         public IResult Update(User user)

@@ -26,7 +26,7 @@ namespace Business.Concrete
             _carDal = carDal;
         }
         [ValidationAspect(typeof(CarValidator))]
-        [SecuredOperation("admin,car.admin,car.add")]
+     //   [SecuredOperation("admin,car.admin,car.add")]
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Add(Car car)
         {          
@@ -47,7 +47,7 @@ namespace Business.Concrete
               
             return null;
         }
-        [SecuredOperation("admin,car.admin,car.delete")]
+       // [SecuredOperation("admin,car.admin,car.delete")]
         [ValidationAspect(typeof(CarValidator))]
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Delete(Car car)
@@ -56,7 +56,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        [SecuredOperation("admin,car.admin,car.getall")]
+        //[SecuredOperation("admin,car.admin,car.getall")]
         [CacheAspect]
         public IDataResult<List<Car>> GetAll()
         {
@@ -72,23 +72,23 @@ namespace Business.Concrete
 
             return new SuccessDataResult<Car>(_carDal.Get(c=>c.Id==carId));
         }
-        [SecuredOperation("admin,car.admin,car.getcarsbybrandid")]
+     //   [SecuredOperation("admin,car.admin,car.getcarsbybrandid")]
         public IDataResult<List<Car>> GetCarsByBrandId(int brandId)
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == brandId));
         }
-        [SecuredOperation("admin,car.admin,car.getcarsbycolorid")]
+     //   [SecuredOperation("admin,car.admin,car.getcarsbycolorid")]
         public IDataResult<List<Car>> GetCarsByColorId(int colorId)
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == colorId));
         }
-        [SecuredOperation("admin,car.admin,car.getcarsdetails")]
+      //  [SecuredOperation("admin,car.admin,car.getcarsdetails")]
         public IDataResult<List<CarDetailDto>> GetCarsDetails()
         {
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsDetails(),Messages.ProductListed);
         }
         [ValidationAspect(typeof(CarValidator))]
-        [SecuredOperation("admin,car.admin,car.update")]
+      //  [SecuredOperation("admin,car.admin,car.update")]
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Update(Car car)
         {

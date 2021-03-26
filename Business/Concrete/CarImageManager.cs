@@ -26,7 +26,7 @@ namespace Business.Concrete
         {
             _carImageDal = carImageDal;
         }
-        [SecuredOperation("admin,carimage.admin,carimage.add")]
+     //   [SecuredOperation("admin,carimage.admin,carimage.add")]
         [CacheRemoveAspect("ICarImageService.Get")]
         [ValidationAspect(typeof(CarImageValidator))]
         [TransactionScopeAspect]
@@ -46,7 +46,7 @@ namespace Business.Concrete
         }
        
         [CacheRemoveAspect("ICarImageService.Get")]
-        [SecuredOperation("admin,carimage.admin,carimage.delete")]
+     //   [SecuredOperation("admin,carimage.admin,carimage.delete")]
         [ValidationAspect(typeof(CarImageValidator))]
         [TransactionScopeAspect]
         public IResult Delete(CarImage carImage)
@@ -57,12 +57,12 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        [SecuredOperation("admin,carimage.admin,carimage.get")]
+      // [SecuredOperation("admin,carimage.admin,carimage.get")]
         public IDataResult<CarImage> Get(int id)
         {
             return new SuccessDataResult<CarImage>(_carImageDal.Get(p => p.Id == id));
         }
-        [SecuredOperation("admin,carimage.admin,carimage.getall")]
+      //  [SecuredOperation("admin,carimage.admin,carimage.getall")]
         [CacheAspect]
         public IDataResult<List<CarImage>> GetAll()
         {
@@ -74,7 +74,7 @@ namespace Business.Concrete
             return ReturnImagesNullCheckedByCarId(id);
         }
         [ValidationAspect(typeof(CarImageValidator))]
-        [SecuredOperation("admin,carimage.admin,carimage.update")]
+     //   [SecuredOperation("admin,carimage.admin,carimage.update")]
         [CacheRemoveAspect("ICarImageService.Get")]
         [TransactionScopeAspect]
         public IResult Update(IFormFile file, CarImage carImage)

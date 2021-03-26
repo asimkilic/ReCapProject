@@ -11,6 +11,7 @@ using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
 using Business.BusinessAspects.Autofac;
 using Core.Aspects.Autofac.Caching;
+using Entities.DTOs;
 
 namespace Business.Concrete
 {
@@ -22,7 +23,7 @@ namespace Business.Concrete
         {
             _rentalDal = rentalDal;
         }
-        [SecuredOperation("admin,rental.admin,rental.add")]
+       // [SecuredOperation("admin,rental.admin,rental.add")]
         [ValidationAspect(typeof(RentalValidator))]
         [CacheRemoveAspect("IRentalService.Get")]
         public IResult Add(Rental rental)
@@ -36,7 +37,7 @@ namespace Business.Concrete
             return new ErrorResult(Messages.RentalAddError);
         
         }
-        [SecuredOperation("admin,rental.admin,rental.delete")]
+      //  [SecuredOperation("admin,rental.admin,rental.delete")]
         [ValidationAspect(typeof(RentalValidator))]
         [CacheRemoveAspect("IRentalService.Get")]
         public IResult Delete(Rental rental)
@@ -44,12 +45,18 @@ namespace Business.Concrete
             _rentalDal.Delete(rental);
             return new SuccessResult();
         }
-        [SecuredOperation("admin,rental.admin,rental.getall")]
+       // [SecuredOperation("admin,rental.admin,rental.getall")]
         public IDataResult<List<Rental>> GetAll()
         {
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll());
         }
-        [SecuredOperation("admin,rental.admin,rental.update")]
+        // [SecuredOperation("admin,rental.admin,rental.getrentaldetails")]
+        public IDataResult<List<RentalDetailDto>> GetRentalsDetails()
+        {
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalsDetails());
+        }
+
+        //  [SecuredOperation("admin,rental.admin,rental.update")]
         [ValidationAspect(typeof(RentalValidator))]
         [CacheRemoveAspect("IRentalService.Get")]
         public IResult Update(Rental rental)
