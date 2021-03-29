@@ -72,7 +72,10 @@ namespace Business.Concrete
 
             return new SuccessDataResult<Car>(_carDal.Get(c=>c.Id==carId));
         }
-     //   [SecuredOperation("admin,car.admin,car.getcarsbybrandid")]
+
+    
+
+        //   [SecuredOperation("admin,car.admin,car.getcarsbybrandid")]
         public IDataResult<List<Car>> GetCarsByBrandId(int brandId)
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == brandId));
@@ -82,11 +85,42 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == colorId));
         }
-      //  [SecuredOperation("admin,car.admin,car.getcarsdetails")]
+        //  [SecuredOperation("admin,car.admin,car.getcardetailsbyid")]
+        public IDataResult<CarDetailDto> GetCarDetailsById(int id)
+        {
+            var result = _carDal.GetCarDetailsById(id);
+            CheckNullImageSingle(result.CarImages, id);
+            return new SuccessDataResult<CarDetailDto>(result);
+        }
+        //  [SecuredOperation("admin,car.admin,car.getcarsdetails")]
+       
         public IDataResult<List<CarDetailDto>> GetCarsDetails()
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsDetails(),Messages.ProductListed);
+            List<CarDetailDto> carDetailDto = _carDal.GetCarsDetails();
+            var result = CheckNullImageList(carDetailDto);
+            
+            return new SuccessDataResult<List<CarDetailDto>>(result, Messages.ProductListed);
         }
+        public IDataResult<List<CarDetailDto>> GetCarsDetailsByBrandId(int id)
+        {
+            List<CarDetailDto> carDetailDto = _carDal.GetCarsDetailsByBrandId(id);
+
+            var result = CheckNullImageList(carDetailDto);
+
+            return new SuccessDataResult<List<CarDetailDto>>(result, Messages.ProductListed);
+
+        }
+        public IDataResult<List<CarDetailDto>> GetCarsDetailsByColorId(int id)
+        {
+
+            List<CarDetailDto> carDetailDto = _carDal.GetCarsDetailsByColorId(id);
+
+            var result = CheckNullImageList(carDetailDto);
+
+            return new SuccessDataResult<List<CarDetailDto>>(result, Messages.ProductListed);
+
+        }
+
         [ValidationAspect(typeof(CarValidator))]
       //  [SecuredOperation("admin,car.admin,car.update")]
         [CacheRemoveAspect("ICarService.Get")]
@@ -95,5 +129,25 @@ namespace Business.Concrete
             _carDal.Update(car);
             return new SuccessResult();
         }
+        private List<CarDetailDto> CheckNullImageList(List<CarDetailDto> carDetailDtos)
+        {
+          
+            foreach (var carDetailDto in carDetailDtos)
+            {
+                CheckNullImageSingle(carDetailDto.CarImages, carDetailDto.CarId);
+            }
+            return carDetailDtos;
+        }
+        private List<CarImage> CheckNullImageSingle(List<CarImage> carImages,int carId)
+        {
+            string path = @"\Uploads\default.jpg";
+            if (carImages.Count==0)
+            {
+                carImages.Add(new CarImage { ImagePath = path, CarId = carId, Date = null });
+            }
+            return carImages;
+        }
+
+      
     }
 }

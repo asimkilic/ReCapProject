@@ -19,5 +19,10 @@ namespace Business.Abstract
         IResult Update(Car car);
         IResult Delete(Car car);
         IResult AddTransactionalTest(Car car); //uygulamalarda tutarlılığı sağlamak için kullandığımız yöntem.
+        IDataResult<CarDetailDto> GetCarDetailsById(int id);
+        IDataResult<List<CarDetailDto>> GetCarsDetailsByBrandId(int id);
+        IDataResult<List<CarDetailDto>> GetCarsDetailsByColorId(int id);
+
+        
     }
 }

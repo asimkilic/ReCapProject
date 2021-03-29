@@ -63,7 +63,7 @@ namespace Business.Concrete
             return new SuccessDataResult<CarImage>(_carImageDal.Get(p => p.Id == id));
         }
       //  [SecuredOperation("admin,carimage.admin,carimage.getall")]
-        [CacheAspect]
+       // [CacheAspect]
         public IDataResult<List<CarImage>> GetAll()
         {
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll());
