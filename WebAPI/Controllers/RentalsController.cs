@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -22,6 +23,29 @@ namespace WebAPI.Controllers
         public IActionResult GetAll()
         {
             var result = _rentalService.GetAll();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+
+        }
+        [HttpPost("payment")]
+        public IActionResult Payment(RentWithCreditCard rentWithCreditCard)
+        {
+            var result = _rentalService.RentWithCreditCard(rentWithCreditCard);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+
+        }
+
+        [HttpPost("checkcarrentbycarid")]
+        public IActionResult GetRentalsDetails(Rental rental)
+        {
+            var result = _rentalService.CheckCarRentByCarId(rental);
             if (result.Success)
             {
                 return Ok(result);

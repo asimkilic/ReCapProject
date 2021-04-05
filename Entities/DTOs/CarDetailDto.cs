@@ -18,6 +18,11 @@ namespace Entities.DTOs
         public int ModelYear { get; set; }
         public string Description { get; set; }
         public List<CarImage> CarImages { get; set; }
+        public CarFeature CarFeature { get; set; }
+        public string SegmentClass { get; set; }
+        public int SegmentId { get; set; }
+
+
 
     }
 }

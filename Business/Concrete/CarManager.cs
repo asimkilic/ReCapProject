@@ -26,28 +26,28 @@ namespace Business.Concrete
             _carDal = carDal;
         }
         [ValidationAspect(typeof(CarValidator))]
-     //   [SecuredOperation("admin,car.admin,car.add")]
+        //   [SecuredOperation("admin,car.admin,car.add")]
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Add(Car car)
-        {          
-                _carDal.Add(car);
-                return new SuccessResult();
+        {
+            _carDal.Add(car);
+            return new SuccessResult();
         }
         [TransactionScopeAspect]
         [SecuredOperation("adminadminadmin")]
         public IResult AddTransactionalTest(Car car)
         {
-           
-                    Add(car);
-                    if (car.ColorId == 1)
-                    {
-                        throw new Exception("");
-                    }
-                    Add(car);
-              
+
+            Add(car);
+            if (car.ColorId == 1)
+            {
+                throw new Exception("");
+            }
+            Add(car);
+
             return null;
         }
-       // [SecuredOperation("admin,car.admin,car.delete")]
+        // [SecuredOperation("admin,car.admin,car.delete")]
         [ValidationAspect(typeof(CarValidator))]
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Delete(Car car)
@@ -60,7 +60,7 @@ namespace Business.Concrete
         [CacheAspect]
         public IDataResult<List<Car>> GetAll()
         {
-          
+
             return new SuccessDataResult<List<Car>>(_carDal.GetAll());
 
         }
@@ -68,19 +68,19 @@ namespace Business.Concrete
         [CacheAspect]
         public IDataResult<Car> GetById(int carId)
         {
-          
 
-            return new SuccessDataResult<Car>(_carDal.Get(c=>c.Id==carId));
+
+            return new SuccessDataResult<Car>(_carDal.Get(c => c.Id == carId));
         }
 
-    
+
 
         //   [SecuredOperation("admin,car.admin,car.getcarsbybrandid")]
         public IDataResult<List<Car>> GetCarsByBrandId(int brandId)
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == brandId));
         }
-     //   [SecuredOperation("admin,car.admin,car.getcarsbycolorid")]
+        //   [SecuredOperation("admin,car.admin,car.getcarsbycolorid")]
         public IDataResult<List<Car>> GetCarsByColorId(int colorId)
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == colorId));
@@ -93,12 +93,12 @@ namespace Business.Concrete
             return new SuccessDataResult<CarDetailDto>(result);
         }
         //  [SecuredOperation("admin,car.admin,car.getcarsdetails")]
-       
+
         public IDataResult<List<CarDetailDto>> GetCarsDetails()
         {
             List<CarDetailDto> carDetailDto = _carDal.GetCarsDetails();
             var result = CheckNullImageList(carDetailDto);
-            
+
             return new SuccessDataResult<List<CarDetailDto>>(result, Messages.ProductListed);
         }
         public IDataResult<List<CarDetailDto>> GetCarsDetailsByBrandId(int id)
@@ -120,34 +120,81 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarDetailDto>>(result, Messages.ProductListed);
 
         }
+        public IDataResult<List<CarDetailDto>> GetCarsWithByColorIdAndBrandId(int colorId, int brandId)
+        {
+            List<CarDetailDto> carDetails = _carDal.GetCarsWithByColorIdAndBrandId(colorId, brandId);
+            var result = CheckNullImageList(carDetails);
+
+            return new SuccessDataResult<List<CarDetailDto>>(result, Messages.ProductListed);
+        }
 
         [ValidationAspect(typeof(CarValidator))]
-      //  [SecuredOperation("admin,car.admin,car.update")]
+        //  [SecuredOperation("admin,car.admin,car.update")]
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Update(Car car)
         {
             _carDal.Update(car);
             return new SuccessResult();
         }
+        public IDataResult<List<CarDetailDto>> GetRelatedCarsBySegmentId(int segmentId)
+        {
+            List<CarDetailDto> relatedCarsBySegment = _carDal.GetRelatedCarsBySegmentId(segmentId);
+            var result = CheckNullImageList(SelectAtMostThreeCar(relatedCarsBySegment));
+            return new SuccessDataResult<List<CarDetailDto>>(result, Messages.ProductListed);
+
+
+
+        }
         private List<CarDetailDto> CheckNullImageList(List<CarDetailDto> carDetailDtos)
         {
-          
+
             foreach (var carDetailDto in carDetailDtos)
             {
                 CheckNullImageSingle(carDetailDto.CarImages, carDetailDto.CarId);
             }
             return carDetailDtos;
         }
-        private List<CarImage> CheckNullImageSingle(List<CarImage> carImages,int carId)
+        private List<CarImage> CheckNullImageSingle(List<CarImage> carImages, int carId)
         {
             string path = @"\Uploads\default.jpg";
-            if (carImages.Count==0)
+            if (carImages.Count == 0)
             {
                 carImages.Add(new CarImage { ImagePath = path, CarId = carId, Date = null });
             }
             return carImages;
         }
+        private List<CarDetailDto> SelectAtMostThreeCar(List<CarDetailDto> carDetailDtos)
+        {
+            int totalCount = carDetailDtos.Count;
+            if (totalCount > 3)
+            {
+                Random random = new Random();
+                int[] indexes = new int[3];
 
-      
+                for (int i = 0; i < 3; i++)
+                {
+                    indexes[i] = random.Next(totalCount);
+                    for (int control = 0; control < i; control++)
+                    {
+                        if (indexes[control] == indexes[i])
+                        {
+                            i--;
+                            break;
+                        }
+                    }
+                }
+                List<CarDetailDto> newCarList = new List<CarDetailDto>();
+                for (int i = 0; i < 3; i++)
+                {
+                    newCarList.Add(carDetailDtos[indexes[i]]);
+                }
+                return newCarList;
+            }
+            return carDetailDtos;
+
+        }
+
+
+
     }
 }
