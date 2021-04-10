@@ -64,10 +64,10 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll());
 
         }
-        [SecuredOperation("admin,car.admin,car.getbyid")]
+        //[SecuredOperation("admin,car.admin,car.getbyid")]
         [CacheAspect]
         public IDataResult<Car> GetById(int carId)
-        {
+        {gith
 
 
             return new SuccessDataResult<Car>(_carDal.Get(c => c.Id == carId));

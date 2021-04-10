@@ -31,5 +31,8 @@ namespace Business.Constants
         public static string AuthorizationDenied="Yetkiniz yok.";
         public static string PaymentSuccess="Ödemeniz başarıyla gerçekleştirildi";
         public static string PoorUser="Ödeme reddedildi";
+
+        public static string BrandAdded = "Marka eklendi";
+
     }
 }
